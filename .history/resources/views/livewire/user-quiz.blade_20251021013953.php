@@ -142,8 +142,8 @@
                           class="block rounded-full bg-gray-200"
                         >
                           <span
-                            class="block h-4 rounded-full bg-indigo-600 text-center text-[10px]/4"
-                            style="width: {{ $quizPecentage }}%;"
+                            class="block h-"4 rounded-full bg-indigo-600 text-center text-[10px]/4"
+                            style="width: {{ $quizPecentage . '%' }};
                           >
                             <span class="rounded-sm bg-white px-0.5 font-bold text-indigo-600">
                                 {{ $quizPecentage }}%
