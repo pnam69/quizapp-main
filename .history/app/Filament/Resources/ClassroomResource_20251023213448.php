@@ -358,7 +358,7 @@ admin@admin.com
     "id": 1,
     "name": "Admin User",
     "email": "admin@admin.com",
-    "is_admin": 0,
+    "is_admin": 1,
     "is_active": 1,
     "email_verified_at": null,
     "last_login": null,
