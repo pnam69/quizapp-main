@@ -12,13 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // ensure a user exists so seeders that reference users won't fail
-        \App\Models\User::factory()->create();
+        // \App\Models\User::factory(10)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
         $this->call(QuoteSeeder::class);
         $this->call(SectionsTableSeeder::class);
         $this->call(CertificationsTableSeeder::class);
         $this->call(DomainsTableSeeder::class);
         $this->call(QuestionsSeeder::class);
-    }
+
+        }
 }
