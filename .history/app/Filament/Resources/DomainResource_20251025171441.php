@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Facades\Gate;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource\RelationManagers;
 use App\Models\Domain;
@@ -33,6 +34,10 @@ class DomainResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() < 2 ? 'warning' : 'primary';
+    }
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('super_admin') || parent::canViewAny();
     }
 
 
