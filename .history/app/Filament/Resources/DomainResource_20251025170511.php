@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Illuminate\Support\Facades\Gate;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource\RelationManagers;
 use App\Models\Domain;

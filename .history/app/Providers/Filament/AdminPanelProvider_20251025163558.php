@@ -40,9 +40,9 @@ class AdminPanelProvider extends PanelProvider
             ->profile()
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('Member')
-                    ->icon('heroicon-o-cog-6-tooth')
-                    ->url('/member')
+                ->label('Member')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->url('/member')
             ])
             ->sidebarCollapsibleOnDesktop()
             ->emailVerification()
@@ -94,18 +94,12 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->resources([
-                \App\Filament\Resources\UserResource::class,
-                \App\Filament\Resources\SectionResource::class,
-            ])
             ->renderHook(
                 // This line tells us where to render it
                 'panels::body.end',
                 // This is the view that will be rendered
-                fn() => view('filament.footer.footer'),
-            )
-            ->plugins([
-                FilamentShieldPlugin::make(),
-            ]);
+                fn () => view('filament.footer.footer'),
+            );
+
     }
 }

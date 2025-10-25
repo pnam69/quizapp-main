@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Illuminate\Support\Facades\Gate;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource\RelationManagers;
 use App\Models\Domain;
@@ -35,10 +34,9 @@ class DomainResource extends Resource
     {
         return static::getModel()::count() < 2 ? 'warning' : 'primary';
     }
-    public static function canViewAny(): bool
+    public static function canViewAny($user): bool
     {
-        // Use Gate to check the current user
-        return Gate::check('viewAny', static::getModel());
+        return $user->hasRole('super_admin');
     }
 
 

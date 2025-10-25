@@ -57,9 +57,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     ];
 
     public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->is_admin === 1 && $this->is_active;
-    }
+{
+    return $this->is_admin === 1 && $this->is_active;
+}
 
     // public function canAccessPanel(Panel $panel): bool
     // {
@@ -80,42 +80,35 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+        return $this->avatar_url ? Storage::url($this->avatar_url) : null ;
     }
 
 
 
-    public function sections(): HasMany
-    {
+    public function sections(): HasMany {
         return $this->hasMany(Section::class);
     }
 
-    public function quotes(): HasMany
-    {
+    public function quotes(): HasMany {
         return $this->hasMany(Section::class);
     }
 
-    public function certifications(): HasMany
-    {
+    public function certifications(): HasMany {
         return $this->hasMany(Section::class);
     }
 
-    public function domains(): HasMany
-    {
+    public function domains(): HasMany {
         return $this->hasMany(Section::class);
     }
-    public function quizHeaders(): HasMany
-    {
+    public function quizHeaders(): HasMany {
         return $this->hasMany(QuizHeader::class);
     }
 
-    public function sections_owned(): BelongsToMany
-    {
+    public function sections_owned(): BelongsToMany {
         return $this->belongsToMany(Section::class);
     }
 
-    public function certifications_owned(): BelongsToMany
-    {
+    public function certifications_owned(): BelongsToMany {
         return $this->belongsToMany(Certification::class);
     }
 }

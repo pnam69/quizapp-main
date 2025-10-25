@@ -17,15 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/debug-auth', function () {
-    return response()->json([
-        'auth_user' => auth()->user(),
-        'auth_id' => auth()->id(),
-        'session_id' => session()->getId(),
-        'cookies' => request()->cookies->all(),
-        'headers' => [
-            'host' => request()->header('host'),
-            'referer' => request()->header('referer'),
-        ],
-    ]);
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index']);
 });

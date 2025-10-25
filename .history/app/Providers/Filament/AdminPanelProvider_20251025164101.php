@@ -103,9 +103,6 @@ class AdminPanelProvider extends PanelProvider
                 'panels::body.end',
                 // This is the view that will be rendered
                 fn() => view('filament.footer.footer'),
-            )
-            ->plugins([
-                FilamentShieldPlugin::make(),
-            ]);
+            );
     }
 }

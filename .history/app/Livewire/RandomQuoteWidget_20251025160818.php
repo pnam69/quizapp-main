@@ -25,5 +25,4 @@ class RandomQuoteWidget extends Widget
         
     }
     
-    
 }

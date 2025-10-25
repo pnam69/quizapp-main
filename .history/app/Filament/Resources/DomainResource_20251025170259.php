@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Illuminate\Support\Facades\Gate;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource\RelationManagers;
 use App\Models\Domain;
@@ -35,17 +34,14 @@ class DomainResource extends Resource
     {
         return static::getModel()::count() < 2 ? 'warning' : 'primary';
     }
-    public static function canViewAny(): bool
-    {
-        // Use Gate to check the current user
-        return Gate::check('viewAny', static::getModel());
-    }
 
-
-    public static function canCreate(): bool
-    {
+    public static function canCreate(): bool {
         return false;
     }
+    public static function canViewAny($user): bool
+{
+    return $user->hasRole('super_admin');
+}
     public static function form(Form $form): Form
     {
         return $form
@@ -100,15 +96,15 @@ class DomainResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_active'),
 
                 Tables\Columns\TextColumn::make('certification.section.name')
-                    ->searchable()
-                    ->sortable(),
+                ->searchable()
+                ->sortable(),
 
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->sortable()
-                    ->searchable()
-                    ->label('Author')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                ->sortable()
+                ->searchable()
+                ->label('Author')
+                ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

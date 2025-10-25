@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Illuminate\Support\Facades\Gate;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource\RelationManagers;
 use App\Models\Domain;
@@ -35,11 +34,97 @@ class DomainResource extends Resource
     {
         return static::getModel()::count() < 2 ? 'warning' : 'primary';
     }
-    public static function canViewAny(): bool
-    {
-        // Use Gate to check the current user
-        return Gate::check('viewAny', static::getModel());
-    }
+    [{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "_generated_diagnostic_collection_name_#1",
+	"code": "P1038",
+	"severity": 8,
+	"message": "Method 'App\\Filament\\Resources\\DomainResource::canViewAny()' is not compatible with method 'Filament\\Resources\\Resource::canViewAny()'.",
+	"source": "intelephense",
+	"startLineNumber": 37,
+	"startColumn": 5,
+	"endLineNumber": 37,
+	"endColumn": 51,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "_generated_diagnostic_collection_name_#4",
+	"code": "PHP2439",
+	"severity": 8,
+	"message": "Declaration of DomainResource::canViewAny($user): bool must be compatible with Resource::canViewAny(): bool",
+	"source": "PHP",
+	"startLineNumber": 37,
+	"startColumn": 39,
+	"endLineNumber": 37,
+	"endColumn": 44,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"Spatie\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 9,
+	"startColumn": 31,
+	"endLineNumber": 9,
+	"endColumn": 37,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"Spatie\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 13,
+	"startColumn": 29,
+	"endLineNumber": 13,
+	"endColumn": 35,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"heroicon\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 22,
+	"startColumn": 49,
+	"endLineNumber": 22,
+	"endColumn": 57,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"toggleable\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 109,
+	"startColumn": 23,
+	"endLineNumber": 109,
+	"endColumn": 33,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"toggleable\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 114,
+	"startColumn": 23,
+	"endLineNumber": 114,
+	"endColumn": 33,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Android/quizapp1/quizapp-main/quizapp-main/app/Filament/Resources/DomainResource.php",
+	"owner": "cSpell",
+	"severity": 2,
+	"message": "\"toggleable\": Unknown word.",
+	"source": "cSpell",
+	"startLineNumber": 118,
+	"startColumn": 23,
+	"endLineNumber": 118,
+	"endColumn": 33,
+	"origin": "extHost1"
+}]
 
 
     public static function canCreate(): bool

@@ -22,7 +22,9 @@ class RandomQuoteWidget extends Widget
     public function mount(){
 
         $this->randomQuote = $quote = Quote::where('is_active',true)->inRandomOrder()->first();
-        
+        if (!$this->randomQuote) {
+            \Log::warning('RandomQuoteWidget: No active quotes found.');
+        }
     }
     
     

@@ -9,6 +9,7 @@ use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RandomQuoteWidget extends Widget
 {
+    
     use HasWidgetShield;
 
     protected static ?int $sort = 1;
@@ -22,8 +23,6 @@ class RandomQuoteWidget extends Widget
     public function mount(){
 
         $this->randomQuote = $quote = Quote::where('is_active',true)->inRandomOrder()->first();
-        
     }
-    
     
 }
