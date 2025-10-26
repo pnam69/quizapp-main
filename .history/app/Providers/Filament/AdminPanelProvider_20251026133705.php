@@ -60,19 +60,6 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\CertificationResource::class,
                 \App\Filament\Resources\QuizResource::class,
                 \App\Filament\Resources\QuestionResource::class,
-                \App\Filament\Resources\ClassroomResource::class,
-            ])
-            ->plugins([
-                FilamentShieldPlugin::make(),
-                BreezyCore::make()
-                    ->avatarUploadComponent(fn($fileUpload) => $fileUpload->disableLabel())
-                    ->enableTwoFactorAuthentication(force: false)
-                    ->myProfile(
-                        shouldRegisterUserMenu: true,
-                        shouldRegisterNavigation: false,
-                        hasAvatars: true,
-                        slug: 'my-profile'
-                    ),
             ])
             ->maxContentWidth('full')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
@@ -91,6 +78,21 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
+                BreezyCore::make()
+                    ->avatarUploadComponent(fn($fileUpload) => $fileUpload->disableLabel())
+                    ->enableTwoFactorAuthentication(
+                        force: false, // force the user to enable 2FA before they can use the application (default = false)
+                    )
+                    ->myProfile(
+                        shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
+                        shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
+                        hasAvatars: true, // Enables the avatar upload form component (default = false)
+                        slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
+
+                    )
+            ])
             ->databaseNotifications()
             ->authMiddleware([
                 Authenticate::class,
@@ -100,6 +102,9 @@ class AdminPanelProvider extends PanelProvider
                 'panels::body.end',
                 // This is the view that will be rendered
                 fn() => view('filament.footer.footer'),
-            );
+            )
+            ->plugins([
+                FilamentShieldPlugin::make(),
+            ]);
     }
 }

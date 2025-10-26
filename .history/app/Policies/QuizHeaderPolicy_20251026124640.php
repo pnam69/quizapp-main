@@ -18,7 +18,7 @@ class QuizHeaderPolicy
      */
     public function viewAny(User $user): bool
     {
-       // return $user->can('view_any_quiz::header');
+        return $user->can('view_any_quiz::header');
         return true;
     }
 

@@ -8,15 +8,6 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 class AuthServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        $this->registerPolicies();
-
-        // Give super_admin full access to everything in Filament
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('super_admin') ? true : null;
-        });
-    }
     /**
      * The model to policy mappings for the application.
      *
@@ -25,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         //
     ];
-
+    
 
     /**
      * Register any authentication / authorization services.

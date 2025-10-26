@@ -85,9 +85,8 @@ return [
             'enabled' => true,
         ],
 
-        // <-- make this false so resources are NOT excluded from generation
         'resources' => [
-            'enabled' => false,
+            'enabled' => true,
         ],
     ],
 

@@ -43,6 +43,7 @@ return [
             'force_delete',
             'force_delete_any',
         ],
+
         'page' => 'page',
         'widget' => 'widget',
     ],
@@ -58,17 +59,6 @@ return [
         'enabled' => true,
         'option' => 'policies_and_permissions',
         'policy_directory' => 'Policies',
-
-        // Add these 👇
-        'resource' => [
-            'enabled' => true,
-        ],
-        'page' => [
-            'enabled' => true,
-        ],
-        'widget' => [
-            'enabled' => true,
-        ],
     ],
 
     'exclude' => [
@@ -80,24 +70,22 @@ return [
         ],
 
         'widgets' => [
-            'AccountWidget',
-            'FilamentInfoWidget',
-            'enabled' => true,
+            'AccountWidget', 'FilamentInfoWidget',
         ],
 
-        // <-- make this false so resources are NOT excluded from generation
         'resources' => [
-            'enabled' => false,
+            'enabled' => true,
         ],
     ],
 
     'discovery' => [
-        'discover_all_resources' => true,
-        'discover_all_widgets'   => true,
-        'discover_all_pages'     => true,
+        'discover_all_resources' => false,
+        'discover_all_widgets' => false,
+        'discover_all_pages' => false,
     ],
 
     'register_role_policy' => [
         'enabled' => false,
     ],
+
 ];

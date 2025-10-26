@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\QuizHeader;
+use App\Models\Classroom;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class QuizHeaderPolicy
+class ClassroomPolicy
 {
     use HandlesAuthorization;
 
@@ -18,20 +18,19 @@ class QuizHeaderPolicy
      */
     public function viewAny(User $user): bool
     {
-       // return $user->can('view_any_quiz::header');
-        return true;
+        return $user->can('view_any_classroom');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function view(User $user, QuizHeader $quizHeader): bool
+    public function view(User $user, Classroom $classroom): bool
     {
-        return $user->can('view_quiz::header');
+        return $user->can('view_classroom');
     }
 
     /**
@@ -42,31 +41,31 @@ class QuizHeaderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_quiz::header');
+        return $user->can('create_classroom');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function update(User $user, QuizHeader $quizHeader): bool
+    public function update(User $user, Classroom $classroom): bool
     {
-        return $user->can('update_quiz::header');
+        return $user->can('update_classroom');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function delete(User $user, QuizHeader $quizHeader): bool
+    public function delete(User $user, Classroom $classroom): bool
     {
-        return $user->can('delete_quiz::header');
+        return $user->can('delete_classroom');
     }
 
     /**
@@ -77,19 +76,19 @@ class QuizHeaderPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_quiz::header');
+        return $user->can('delete_any_classroom');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function forceDelete(User $user, QuizHeader $quizHeader): bool
+    public function forceDelete(User $user, Classroom $classroom): bool
     {
-        return $user->can('force_delete_quiz::header');
+        return $user->can('force_delete_classroom');
     }
 
     /**
@@ -100,19 +99,19 @@ class QuizHeaderPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_quiz::header');
+        return $user->can('force_delete_any_classroom');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function restore(User $user, QuizHeader $quizHeader): bool
+    public function restore(User $user, Classroom $classroom): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_classroom');
     }
 
     /**
@@ -123,19 +122,19 @@ class QuizHeaderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_classroom');
     }
 
     /**
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\QuizHeader  $quizHeader
+     * @param  \App\Models\Classroom  $classroom
      * @return bool
      */
-    public function replicate(User $user, QuizHeader $quizHeader): bool
+    public function replicate(User $user, Classroom $classroom): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_classroom');
     }
 
     /**
@@ -146,7 +145,7 @@ class QuizHeaderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_classroom');
     }
 
 }
