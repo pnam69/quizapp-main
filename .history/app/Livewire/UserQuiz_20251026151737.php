@@ -10,7 +10,6 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizHeader;
 use App\Models\Quote;
-use App\Models\Test; // <-- added
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Radio;
@@ -30,7 +29,6 @@ use Illuminate\Support\HtmlString;
 class UserQuiz extends Component implements HasForms
 {
     use InteractsWithForms;
-
     public $quote = '';
     public $domains = [];
     public $domain_id = '';
@@ -50,12 +48,12 @@ class UserQuiz extends Component implements HasForms
     public $quizQuestionCounter = 1;
     public $quizSetupInProgress = true;
     public $isUserAnswerCorrect = false;
+    public Certification $certification;
 
-    public ?Question $currentQuestion = null;               // nullable now
-    public ?QuizHeader $currentquizHeader = null;           // nullable now
-    public ?Certification $certification = null;            // nullable now
 
-    public $test_id; // declared to bind to the preQuiz form
+    public ?Question $currentQuestion;
+    public QuizHeader $currentquizHeader;
+
 
     public function mount()
     {
@@ -64,160 +62,118 @@ class UserQuiz extends Component implements HasForms
 
     public function render()
     {
+
         return view('livewire.user-quiz');
     }
 
     public function initializeQuiz(): void
     {
-        // validate the preQuiz form state
-        $this->preQuizForm->validate();
+        if ($this->preQuizForm->validate()) {
+            // Fetch the selected Test record
+            $test = \App\Models\Test::with('certification')->find($this->test_id);
 
-        // Fetch the selected Test record
-        $test = Test::with('certification')->find($this->test_id);
+            if (!$test || empty($test->question_ids)) {
+                Notification::make()
+                    ->title('Cannot start test')
+                    ->warning()
+                    ->body('This test has no questions assigned.')
+                    ->send();
+                return;
+            }
 
-        if (!$test || empty($test->question_ids) || count($test->question_ids) === 0) {
-            Notification::make()
-                ->title('Cannot start test')
-                ->warning()
-                ->body('This test has no questions assigned.')
-                ->send();
-            return;
+            // Create a new QuizHeader (test attempt)
+            $this->currentquizHeader = QuizHeader::create([
+                'user_id' => auth()->id(),
+                'certification_id' => $test->certification_id,
+                'section_id' => $test->certification->section_id ?? null,
+                'quiz_size' => count($test->question_ids),
+                'test_id' => $test->id,
+                'learningmode' => false, // fixed tests are usually formal
+            ]);
+
+            // Initialize tracking variables
+            $this->answeredQuestions = [];
+            $this->quizQuestionCounter = 1;
+            $this->quizSetupInProgress = false;
+            $this->quizInProgress = true;
+
+            // Load the first question
+            $firstQuestionId = $test->question_ids[0];
+            $this->currentQuestion = Question::with('answers')->find($firstQuestionId);
         }
-
-        $size = count($test->question_ids);
-
-        // Create a new QuizHeader (test attempt)
-        $this->currentquizHeader = QuizHeader::create([
-            'user_id' => auth()->id(),
-            'certification_id' => $test->certification_id,
-            'section_id' => $test->certification->section_id ?? null,
-            'quiz_size' => $size,
-            'test_id' => $test->id,
-            'current_index' => 0, // start at first question
-            'learningmode' => false,
-            'completed' => false,
-        ]);
-
-        // Initialize tracking variables
-        $this->answeredQuestions = [];
-        $this->quizQuestionCounter = 1;
-        $this->quizSetupInProgress = false;
-        $this->quizInProgress = true;
-        $this->currentQuizSize = $size;
-
-        // Load the first question
-        $firstQuestionId = $test->question_ids[0];
-        $this->currentQuestion = Question::with('answers')->find($firstQuestionId);
     }
+
 
     public function startQuiz()
     {
-        // ensure we validate the quiz answer form
-        $this->quizForm->validate();
+        if ($this->quizForm->getState()) {
+            $correctAnswer = Answer::where('question_id', $this->currentQuestion->id)
+                ->where('is_checked', true)
+                ->first();
+            $userAnswered = Answer::where('question_id', $this->currentQuestion->id)
+                ->where('id', $this->answeredQuestionId)
+                ->first();
 
-        if (!$this->currentQuestion || !$this->currentquizHeader) {
-            $this->addError('currentQuestion', 'No question loaded.');
-            return;
+            $isAnswerCorrect = ($correctAnswer->id == $userAnswered->id) ? true : false;
+
+            Quiz::create([
+                'user_id' => auth()->id(),
+                'quiz_header_id' => $this->currentquizHeader->id,
+                'section_id' => $this->certification->section_id,
+                'question_id' => $this->currentQuestion->id,
+                'domain_id' => $this->currentQuestion->domain->id,
+                'certification_id' => $this->certification_id,
+                'answer_id' => $this->answeredQuestionId,
+                'is_correct' => $isAnswerCorrect,
+            ]);
+
+            $this->quizQuestionCounter++;
+            if ($this->quizQuestionCounter > $this->currentQuizSize) {
+                $this->showResults();
+            }
+            $this->currentquizHeader->questions_taken = $this->answeredQuestions;
+            $this->currentquizHeader->save();
+            $this->currentQuestion = $this->getNewQuestion();
         }
-
-        // find correct answer robustly (support either column name used)
-        $correctAnswer = Answer::where('question_id', $this->currentQuestion->id)
-            ->where(function ($q) {
-                $q->where('is_checked', true)
-                  ->orWhere('is_correct', true);
-            })
-            ->first();
-
-        $userAnswered = Answer::where('question_id', $this->currentQuestion->id)
-            ->where('id', $this->answeredQuestionId)
-            ->first();
-
-        $isAnswerCorrect = false;
-        if ($userAnswered && $correctAnswer) {
-            $isAnswerCorrect = ($correctAnswer->id === $userAnswered->id);
-        }
-
-        // record the answer
-        Quiz::create([
-            'user_id' => auth()->id(),
-            'quiz_header_id' => $this->currentquizHeader->id,
-            'section_id' => $this->currentquizHeader->section_id,
-            'question_id' => $this->currentQuestion->id,
-            'domain_id' => optional($this->currentQuestion->domain)->id,
-            'certification_id' => $this->currentquizHeader->certification_id,
-            'answer_id' => $this->answeredQuestionId,
-            'is_correct' => $isAnswerCorrect,
-        ]);
-
-        // append current question to answered list (source-of-truth for UI/trace)
-        $this->answeredQuestions[] = $this->currentQuestion->id;
-
-        // increment header index (DB-level increment to reduce race conditions)
-        $this->currentquizHeader->increment('current_index');
-        $this->currentquizHeader->questions_taken = $this->answeredQuestions;
-        $this->currentquizHeader->save();
-
-        // check if finished
-        $nextIndex = $this->currentquizHeader->current_index;
-        if ($nextIndex >= $this->currentQuizSize) {
-            $this->showResults();
-            return;
-        }
-
-        // reset selection and load next question
-        $this->answeredQuestionId = null;
-        $this->currentQuestion = $this->getNewQuestion();
-        $this->quizQuestionCounter = $nextIndex + 1; // human-facing counter (1-based)
     }
-
     public function getNewQuestion()
     {
-        if (!$this->currentquizHeader || !$this->currentquizHeader->test_id) {
-            return null;
-        }
 
-        $test = Test::find($this->currentquizHeader->test_id);
+        $question = Question::whereIn('domain_id', $this->domains)
+            ->whereIn('level', $this->difficulty)
+            ->whereNotIn('id', $this->answeredQuestions)
+            ->where('is_active', true)
+            ->with(['answers' => function ($answers) {
+                $answers->inRandomOrder()->get();
+            }])
+            ->inRandomOrder()
+            ->first();
 
-        // next index is taken from header
-        $nextIndex = $this->currentquizHeader->current_index;
-
-        if ($nextIndex === null || $nextIndex >= count($test->question_ids)) {
+        if ($question == null && $this->quizQuestionCounter > 1) {
+            Log::info($question);
+            $this->currentquizHeader->quiz_size = $this->quizQuestionCounter - 1;
+            $this->currentquizHeader->save();
             $this->showResults();
-            return null;
         }
-
-        $nextQuestionId = $test->question_ids[$nextIndex] ?? null;
-        if (!$nextQuestionId) {
-            $this->showResults();
-            return null;
+        if (!$question == null) {
+            array_push($this->answeredQuestions, $question->id);
         }
-
-        $question = Question::with('answers')->find($nextQuestionId);
-
         return $question;
     }
 
     public function showResults()
     {
-        if (!$this->currentquizHeader) {
-            return;
-        }
-
-        $total = Quiz::where('quiz_header_id', $this->currentquizHeader->id)->count();
-        $correct = Quiz::where('quiz_header_id', $this->currentquizHeader->id)
+        $this->totalQuizQuestions = Quiz::where('quiz_header_id', $this->currentquizHeader->id)
+            ->count();
+        $this->currectQuizAnswers = Quiz::where('quiz_header_id', $this->currentquizHeader->id)
             ->where('is_correct', '1')
             ->count();
 
-        $this->totalQuizQuestions = $total;
-        $this->currectQuizAnswers = $correct;
-        $this->quizPecentage = $total ? round(($correct / $total) * 100, 2) : 0;
-
+        $this->quizPecentage = round(($this->currectQuizAnswers / $this->totalQuizQuestions) * 100, 2);
         $this->currentquizHeader->questions_taken = $this->answeredQuestions;
         $this->currentquizHeader->completed = true;
         $this->currentquizHeader->score = $this->quizPecentage;
-        $this->currentquizHeader->finished_at = now();
         $this->currentquizHeader->save();
-
         $this->quizInProgress = false;
         $this->quizHasEnded = true;
     }
@@ -229,6 +185,8 @@ class UserQuiz extends Component implements HasForms
             'quizForm',
         ];
     }
+
+
 
     public function preQuizForm(Form $form): Form
     {
@@ -248,13 +206,11 @@ class UserQuiz extends Component implements HasForms
 
                                     Select::make('certification_id')
                                         ->label('Certification')
-                                        ->options(
-                                            Auth::user()->certifications_owned->pluck('name', 'id')
-                                        )
+                                        ->options(Certification::query()->where('is_active', true)->whereIn('id', Auth::user()
+                                            ->certifications_owned()->pluck('id'))->pluck('name', 'id'))
                                         ->required()
                                         ->live()
                                         ->native(false),
-
                                     Select::make('domains')
                                         ->label('Domains to Include')
                                         ->options(fn(Get $get): Collection => Domain::query()

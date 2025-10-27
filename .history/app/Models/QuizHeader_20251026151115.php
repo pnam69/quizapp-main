@@ -20,23 +20,24 @@ class QuizHeader extends Model
         'quiz_size',
         'questions_taken',
         'score',
+        'created_at',
+        'updated_at',
         'difficulty',
         'learningmode',
-        'test_id',         // added
-        'current_index',   // added
-        'started_at',
-        'finished_at',
     ];
 
     protected $casts = [
         'domains' => 'array',
         'questions_taken' => 'array',
         'difficulty' => 'array',
-        'current_index' => 'integer', // added
-        'started_at' => 'datetime',
-        'finished_at' => 'datetime',
     ];
-    
+    Select::make('test_id')
+    ->label('Select Test')
+    ->options(Test::where('is_active', true)->pluck('name', 'id'))
+    ->required()
+    ->live()
+    ->native(false),
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

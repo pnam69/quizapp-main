@@ -18,16 +18,13 @@ class QuizDetailPage extends Component
     {
         $this->record = $record;
         $this->choice = collect(['A', 'B', 'C', 'D']);
-        $this->userQuizDetails = QuizHeader::where('id', $this->record)
-            ->with(['section', 'certification', 'test']) // add test relation
-            ->first();
 
         $this->userQuizDetails = QuizHeader::where('id', $this->record)
-            ->with('section', 'certification')->first();
+            ->with('section','certification')->first();
 
         $this->usersResults = Quiz::with(['question.answers' => function ($query) {
-            $query->orderBy('id');
-        }])
+                $query->orderBy('id');
+            }])
             ->where('quiz_header_id', '=', $this->userQuizDetails->id)
             //->Join('questions', 'quizzes.question_id', '=', 'questions.id')
             ->get();
@@ -37,4 +34,5 @@ class QuizDetailPage extends Component
     {
         return view('livewire.quiz-detail-page');
     }
+
 }

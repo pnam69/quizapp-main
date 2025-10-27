@@ -22,6 +22,7 @@ class QuizDetailPage extends Component
             ->with(['section', 'certification', 'test']) // add test relation
             ->first();
 
+
         $this->userQuizDetails = QuizHeader::where('id', $this->record)
             ->with('section', 'certification')->first();
 

@@ -20,21 +20,16 @@ class QuizHeader extends Model
         'quiz_size',
         'questions_taken',
         'score',
+        'created_at',
+        'updated_at',
         'difficulty',
         'learningmode',
-        'test_id',         // added
-        'current_index',   // added
-        'started_at',
-        'finished_at',
     ];
 
     protected $casts = [
         'domains' => 'array',
         'questions_taken' => 'array',
         'difficulty' => 'array',
-        'current_index' => 'integer', // added
-        'started_at' => 'datetime',
-        'finished_at' => 'datetime',
     ];
     
     public function user(): BelongsTo

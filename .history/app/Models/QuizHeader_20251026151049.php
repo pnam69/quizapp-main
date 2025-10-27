@@ -20,42 +20,33 @@ class QuizHeader extends Model
         'quiz_size',
         'questions_taken',
         'score',
+        'created_at',
+        'updated_at',
         'difficulty',
         'learningmode',
-        'test_id',         // added
-        'current_index',   // added
-        'started_at',
-        'finished_at',
     ];
 
     protected $casts = [
         'domains' => 'array',
         'questions_taken' => 'array',
         'difficulty' => 'array',
-        'current_index' => 'integer', // added
-        'started_at' => 'datetime',
-        'finished_at' => 'datetime',
     ];
-    
-    public function user(): BelongsTo
-    {
+
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
-    public function section(): BelongsTo
-    {
+    public function section(): BelongsTo {
         return $this->belongsTo(Section::class);
     }
-    public function certification(): BelongsTo
-    {
+    public function certification(): BelongsTo {
         return $this->belongsTo(Certification::class);
     }
 
-    public function quizzes(): HasMany
-    {
+    public function quizzes(): HasMany {
         return $this->hasMany(Quiz::class);
     }
-    public function test(): BelongsTo
-    {
-        return $this->belongsTo(Test::class);
-    }
+    public function test(): BelongsTo {
+    return $this->belongsTo(Test::class);
+}
+
 }
