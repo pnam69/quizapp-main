@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User; // <-- import User
+
+class Hub extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'description',
+        'type',
+        'file_path',
+        'link_url',
+        'certification_id',
+        'section_id',
+    ];
+
+    /**
+     * Many-to-Many relation to Users
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'hub_user');
+    }
+}

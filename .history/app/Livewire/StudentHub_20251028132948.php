@@ -1,0 +1,1 @@
+php artisan make:migration create_hub_user_table --create=hub_user
