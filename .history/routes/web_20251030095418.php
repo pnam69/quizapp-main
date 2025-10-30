@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/my-quizzes', [MyQuizzesController::class, 'store'])->name('myquizzes.store');
+
 
 Route::get('/debug-auth', function () {
     return response()->json([
@@ -29,14 +31,6 @@ Route::get('/debug-auth', function () {
             'referer' => request()->header('referer'),
         ],
     ]);
-});
-
-use App\Http\Controllers\MyQuizzesController;
-
-Route::post('/my-quizzes/create', [MyQuizzesController::class, 'create'])->name('myquizzes.create');
-
-Route::get('/my-quizzes/create', function () {
-    return 'Use POST to create a quiz';
 });
 
 Route::middleware(['auth'])->group(function () {

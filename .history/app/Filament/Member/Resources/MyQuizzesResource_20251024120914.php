@@ -32,42 +32,11 @@ class MyQuizzesResource extends Resource
     protected static ?int $navigationSort = 2;
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            \Filament\Forms\Components\TextInput::make('title')
-                ->label('Quiz Title')
-                ->required()
-                ->maxLength(255),
-
-            \Filament\Forms\Components\Textarea::make('description')
-                ->label('Description')
-                ->rows(3),
-
-            \Filament\Forms\Components\TextInput::make('quiz_size')
-                ->numeric()
-                ->default(5)
-                ->label('Number of Questions'),
-
-            \Filament\Forms\Components\Toggle::make('public')
-                ->label('Make this quiz shareable?')
-                ->default(true),
-
-            \Filament\Forms\Components\Repeater::make('questions')
-                ->label('Questions')
-                ->schema([
-                    \Filament\Forms\Components\TextInput::make('question')
-                        ->required(),
-                    \Filament\Forms\Components\Textarea::make('options')
-                        ->label('Answer Options (comma-separated)')
-                        ->required(),
-                    \Filament\Forms\Components\TextInput::make('correct_answer')
-                        ->required()
-                        ->label('Correct Answer'),
-                ])
-                ->minItems(1)
-                ->columns(1),
-        ]);
+        return $form
+            ->schema([
+                //
+            ]);
     }
-
 
     protected static ?string $title = 'My Quizzies';
 
@@ -77,7 +46,7 @@ class MyQuizzesResource extends Resource
     }
 
     public static function canCreate(): bool {
-        return true;
+        return false;
     }
 
     public static function table(Table $table): Table

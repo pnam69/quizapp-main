@@ -39,6 +39,8 @@ Route::get('/my-quizzes/create', function () {
     return 'Use POST to create a quiz';
 });
 
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');

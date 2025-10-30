@@ -2,9 +2,12 @@
 
 namespace App\Filament\Member\Pages;
 
-use App\Models\QuizHeader;
-use Illuminate\Support\Facades\Auth;
 use Filament\Pages\Page;
+use App\Models\QuizHeader;
+use App\Models\Quiz;
+use App\Models\Question;
+use App\Models\Answer;
+use Illuminate\Support\Facades\Auth;
 
 class TakeTest extends Page
 {
@@ -23,13 +26,16 @@ class TakeTest extends Page
     {
         $user = Auth::user();
 
-        $sectionIds = $user->sections()->pluck('sections.id');
-        $certificationIds = $user->certifications()->pluck('certifications.id');
+        // Get the IDs of sections and certifications the user belongs to
+        $sectionIds = $user->sections()->pluck('sections.id')->toArray();
+        $certificationIds = $user->certifications()->pluck('certifications.id')->toArray();
 
-        // Use QuizHeader instead of Quiz
+        // Get quizzes (quiz headers) assigned to those sections or certifications
         $this->quizzes = QuizHeader::query()
             ->whereIn('section_id', $sectionIds)
             ->orWhereIn('certification_id', $certificationIds)
+            ->with(['section', 'certification'])
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 
@@ -37,19 +43,32 @@ class TakeTest extends Page
     {
         $this->selectedQuiz = QuizHeader::find($quizId);
 
-        // Link questions by domain or other method you use
-        $this->questions = \App\Models\Question::where('domain_id', $this->selectedQuiz->domain_id)->get();
+        if (!$this->selectedQuiz) {
+            $this->dispatch('notify', type: 'error', message: 'Quiz not found.');
+            return;
+        }
+
+        // Get all questions linked to this quiz header through quizzes table
+        $this->questions = Question::whereHas('quizzes', function ($query) use ($quizId) {
+            $query->where('quiz_header_id', $quizId);
+        })->get();
+
         $this->answers = [];
     }
 
     public function submit()
     {
+        if (!$this->selectedQuiz) {
+            $this->dispatch('notify', type: 'error', message: 'No quiz selected.');
+            return;
+        }
+
         $correct = 0;
         $total = count($this->questions);
 
         foreach ($this->questions as $question) {
             $chosen = $this->answers[$question->id] ?? null;
-            $answer = \App\Models\Answer::where('question_id', $question->id)
+            $answer = Answer::where('question_id', $question->id)
                 ->where('is_correct', true)
                 ->first();
 
@@ -60,9 +79,16 @@ class TakeTest extends Page
 
         $score = $total ? round(($correct / $total) * 100, 2) : 0;
 
-        $this->selectedQuiz->update(['score' => $score, 'completed' => true]);
+        // Update the quiz header record for this user attempt
+        $this->selectedQuiz->update([
+            'user_id' => Auth::id(),
+            'score' => $score,
+            'completed' => true,
+        ]);
 
         $this->dispatch('notify', type: 'success', message: "You scored {$score}%");
+
+        // Reset state
         $this->reset(['selectedQuiz', 'questions', 'answers']);
         $this->mount();
     }

@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Filament\Member\Pages;
-
 use App\Models\QuizHeader;
 use Illuminate\Support\Facades\Auth;
 use Filament\Pages\Page;

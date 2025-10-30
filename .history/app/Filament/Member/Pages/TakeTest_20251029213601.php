@@ -2,9 +2,12 @@
 
 namespace App\Filament\Member\Pages;
 
+use Filament\Pages\Page;
+use App\Models\Quiz;
+use App\Models\Question;
+use App\Models\Answer;
 use App\Models\QuizHeader;
 use Illuminate\Support\Facades\Auth;
-use Filament\Pages\Page;
 
 class TakeTest extends Page
 {
@@ -21,15 +24,15 @@ class TakeTest extends Page
 
     public function mount()
     {
+        // Fetch quizzes assigned to this student's classroom
         $user = Auth::user();
 
         $sectionIds = $user->sections()->pluck('sections.id');
         $certificationIds = $user->certifications()->pluck('certifications.id');
 
-        // Use QuizHeader instead of Quiz
         $this->quizzes = QuizHeader::query()
-            ->whereIn('section_id', $sectionIds)
-            ->orWhereIn('certification_id', $certificationIds)
+            ->whereIn('section_id', $user->sections()->pluck('sections.id'))
+            ->orWhereIn('certification_id', $user->certifications()->pluck('certifications.id'))
             ->get();
     }
 
@@ -37,10 +40,13 @@ class TakeTest extends Page
     {
         $this->selectedQuiz = QuizHeader::find($quizId);
 
-        // Link questions by domain or other method you use
-        $this->questions = \App\Models\Question::where('domain_id', $this->selectedQuiz->domain_id)->get();
+        $this->questions = Question::whereHas('quizzes', function ($query) use ($quizId) {
+            $query->where('quiz_header_id', $quizId);
+        })->get();
+
         $this->answers = [];
     }
+
 
     public function submit()
     {
@@ -49,7 +55,7 @@ class TakeTest extends Page
 
         foreach ($this->questions as $question) {
             $chosen = $this->answers[$question->id] ?? null;
-            $answer = \App\Models\Answer::where('question_id', $question->id)
+            $answer = Answer::where('question_id', $question->id)
                 ->where('is_correct', true)
                 ->first();
 
@@ -58,12 +64,17 @@ class TakeTest extends Page
             }
         }
 
+
         $score = $total ? round(($correct / $total) * 100, 2) : 0;
 
-        $this->selectedQuiz->update(['score' => $score, 'completed' => true]);
+        QuizHeader::create([
+            'user_id' => Auth::id(),
+            'quiz_id' => $this->selectedQuiz->id,
+            'score' => $score,
+        ]);
 
         $this->dispatch('notify', type: 'success', message: "You scored {$score}%");
         $this->reset(['selectedQuiz', 'questions', 'answers']);
-        $this->mount();
+        $this->mount(); // Reload quizzes
     }
 }

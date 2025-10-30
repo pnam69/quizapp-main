@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 
+
 Route::get('/debug-auth', function () {
     return response()->json([
         'auth_user' => auth()->user(),
@@ -31,17 +32,13 @@ Route::get('/debug-auth', function () {
     ]);
 });
 
-use App\Http\Controllers\MyQuizzesController;
-
-Route::post('/my-quizzes/create', [MyQuizzesController::class, 'create'])->name('myquizzes.create');
-
-Route::get('/my-quizzes/create', function () {
-    return 'Use POST to create a quiz';
-});
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 });
 
+Route::get('/quiz/share/{token}', function ($token) {
+    // handle sharing by token directly (replace with controller logic when QuizShareController is added)
+    return view('quiz.share', ['token' => $token]);
+})->name('quiz.share');

@@ -3,6 +3,8 @@
 namespace App\Filament\Member\Pages;
 
 use App\Models\QuizHeader;
+use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
 use Filament\Pages\Page;
 
@@ -38,7 +40,7 @@ class TakeTest extends Page
         $this->selectedQuiz = QuizHeader::find($quizId);
 
         // Link questions by domain or other method you use
-        $this->questions = \App\Models\Question::where('domain_id', $this->selectedQuiz->domain_id)->get();
+        $this->questions = Question::where('domain_id', $this->selectedQuiz->domain_id)->get();
         $this->answers = [];
     }
 
@@ -49,7 +51,7 @@ class TakeTest extends Page
 
         foreach ($this->questions as $question) {
             $chosen = $this->answers[$question->id] ?? null;
-            $answer = \App\Models\Answer::where('question_id', $question->id)
+            $answer = Answer::where('question_id', $question->id)
                 ->where('is_correct', true)
                 ->first();
 

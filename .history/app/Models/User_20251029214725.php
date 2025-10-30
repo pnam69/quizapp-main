@@ -60,16 +60,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     // ========================
 
     // Many-to-many: users ↔ sections
-    public function sections()
+    public function sections(): BelongsToMany
     {
         return $this->belongsToMany(Section::class, 'section_user', 'user_id', 'section_id');
     }
 
-    public function certifications()
+    // Many-to-many: users ↔ certifications
+    public function certifications(): BelongsToMany
     {
         return $this->belongsToMany(Certification::class, 'certification_user', 'user_id', 'certification_id');
     }
-
 
     // Many-to-many: users ↔ classrooms
     public function classrooms(): BelongsToMany

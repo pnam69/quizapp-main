@@ -2,9 +2,9 @@
 
 namespace App\Filament\Member\Pages;
 
+use Filament\Pages\Page;
 use App\Models\QuizHeader;
 use Illuminate\Support\Facades\Auth;
-use Filament\Pages\Page;
 
 class TakeTest extends Page
 {

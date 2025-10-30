@@ -35,9 +35,6 @@ use App\Http\Controllers\MyQuizzesController;
 
 Route::post('/my-quizzes/create', [MyQuizzesController::class, 'create'])->name('myquizzes.create');
 
-Route::get('/my-quizzes/create', function () {
-    return 'Use POST to create a quiz';
-});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {

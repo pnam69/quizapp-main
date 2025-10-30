@@ -68,3 +68,9 @@ class MyQuizzes extends Model
         return $this->hasMany(Quiz::class, 'quiz_header_id');
     }
 }
+
+    public function quizzes(): HasMany {
+        return $this->hasMany(Quiz::class);
+    }
+
+
