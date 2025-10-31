@@ -12,6 +12,7 @@
         "bezhansalleh/filament-shield": "^3.0",
         "doctrine/dbal": "^3.10",
         "filament/filament": "^3.0-stable",
+        "filament/forms": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.0-stable",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
