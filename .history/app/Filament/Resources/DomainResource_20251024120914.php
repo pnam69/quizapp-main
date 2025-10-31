@@ -126,11 +126,11 @@ class DomainResource extends Resource
     }
 
     public static function getRelations(): array
-    {
-        return [
-            RelationManagers\QuestionsRelationManager::class,
-        ];
-    }
+{
+    return [
+        RelationManagers\DomainQuestionsRelationManager::class,
+    ];
+}
 
     public static function getPages(): array
     {

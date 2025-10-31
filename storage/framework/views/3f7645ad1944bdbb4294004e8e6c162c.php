@@ -18,7 +18,7 @@
 
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Questions: <?php echo e($test->questions()->count()); ?>
+                    Questions: <?php echo e(is_string($test->question_ids) ? count(json_decode($test->question_ids)) : count($test->question_ids)); ?>
 
                 </p>
             </div>
@@ -57,6 +57,7 @@
                 <?php echo e($selectedTest->name ?? 'Test'); ?>
 
             </h2>
+
             <!--[if BLOCK]><![endif]--><?php if(empty($results)): ?>
             <p class="text-sm text-gray-500">
                 Answer all questions carefully and click <strong>Submit</strong> when done.
@@ -86,7 +87,7 @@
 
                 </p>
                 <div class="space-y-2">
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $question->options; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $question->answers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                     $optionClass = '';
                     if ($isAnswered) {
