@@ -8,122 +8,117 @@
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-    <!--[if BLOCK]><![endif]--><?php if(!$selectedTest): ?>
-    <div class="space-y-6">
-        <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $tests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $test): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-        <div class="p-5 rounded-xl shadow-sm border border-gray-200 bg-white dark:bg-gray-900 flex justify-between items-center hover:shadow-md transition">
-            <div>
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    <?php echo e($test->name ?? 'Untitled Test'); ?>
+    
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        
+        <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-indigo-500/10 rounded-full blur-xl animate-pulse"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded-full blur-xl animate-pulse delay-1000"></div>
+        <div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-br from-green-400/10 to-teal-500/10 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div class="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-orange-400/10 to-red-500/10 rounded-full blur-xl animate-pulse delay-3000"></div>
 
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Questions: <?php echo e(is_string($test->question_ids) ? count(json_decode($test->question_ids)) : count($test->question_ids)); ?>
-
-                </p>
-            </div>
-            <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'primary','wire:click' => 'selectTest('.e($test->id).')']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('filament::button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['color' => 'primary','wire:click' => 'selectTest('.e($test->id).')']); ?>
-                Start Test
-             <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
+        
+        <div class="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
         </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-        <p class="text-gray-500 dark:text-gray-400 text-center">
-            No active tests available.
-        </p>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+        
+        <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/5 to-transparent rounded-br-full"></div>
+        <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-purple-500/5 to-transparent rounded-bl-full"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-green-500/5 to-transparent rounded-tr-full"></div>
+        <div class="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-tl from-orange-500/5 to-transparent rounded-tl-full"></div>
     </div>
-    <?php else: ?>
-    <div class="space-y-6">
-        <div class="p-6 rounded-xl shadow-md border border-gray-200 bg-white dark:bg-gray-900">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                <?php echo e($selectedTest->name ?? 'Test'); ?>
 
-            </h2>
-
-            <!--[if BLOCK]><![endif]--><?php if(empty($results)): ?>
-            <p class="text-sm text-gray-500">
-                Answer all questions carefully and click <strong>Submit</strong> when done.
-            </p>
-            <?php else: ?>
-            <?php
-            $total = count($questions);
-            $correct = collect($results)->where('isCorrect', true)->count();
-            $score = $total ? round(($correct / $total) * 100, 2) : 0;
-            ?>
-            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                You scored <span class="text-green-600 dark:text-green-400"><?php echo e($score); ?>%</span> (<?php echo e($correct); ?>/<?php echo e($total); ?>)
-            </p>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-        </div>
-
-        <form wire:submit.prevent="submit" class="space-y-6">
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $questions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $question): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php
-            $isAnswered = isset($results[$question->id]);
-            $chosen = $results[$question->id]['chosen'] ?? null;
-            $correct = $results[$question->id]['correct'] ?? null;
-            ?>
-            <div class="p-5 rounded-lg border border-gray-200 bg-white dark:bg-gray-800 shadow-sm">
-                <p class="font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                    <?php echo e($index + 1); ?>. <?php echo e($question->question); ?>
-
-                </p>
-                <div class="space-y-2">
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $question->answers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php
-                    $optionClass = '';
-                    if ($isAnswered) {
-                    if ($option->id == $correct) {
-                    $optionClass = 'bg-green-100 dark:bg-green-700 border-green-400';
-                    } elseif ($option->id == $chosen) {
-                    $optionClass = 'bg-red-100 dark:bg-red-700 border-red-400';
-                    }
-                    }
-                    ?>
-                    <label class="flex items-center space-x-2 cursor-pointer border px-3 py-2 rounded <?php echo e($optionClass); ?>">
-                        <input type="radio"
-                            wire:model="answers.<?php echo e($question->id); ?>"
-                            value="<?php echo e($option->id); ?>"
-                            class="text-primary-600 focus:ring-primary-500"
-                            <?php echo e($isAnswered ? 'disabled' : ''); ?>>
-                        <span class="text-gray-700 dark:text-gray-300"><?php echo e($option->answer); ?></span>
-                    </label>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+    <div class="relative min-h-screen">
+        
+        <!--[if BLOCK]><![endif]--><?php if($selectedTest && empty($results)): ?>
+        <div class="fixed top-24 right-6 z-10 hidden lg:block w-80">
+            <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-200/50 dark:border-gray-700/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-900 dark:text-gray-100">Quick Tips</span>
+                </div>
+                <div class="space-y-3 text-xs text-gray-600 dark:text-gray-400">
+                    <div class="flex items-start gap-2">
+                        <span class="text-blue-500 mt-1">•</span>
+                        <span>Read questions carefully before answering</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span>You can change your answers before submitting</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-purple-500 mt-1">•</span>
+                        <span>Review all answers before clicking Submit</span>
+                    </div>
                 </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+        </div>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            <div class="flex justify-between pt-4">
-                <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+        <div class="max-w-7xl mx-auto space-y-6 px-4 sm:px-6 lg:px-8 py-8">
+            <!--[if BLOCK]><![endif]--><?php if(!$selectedTest): ?>
+            
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 rounded-xl shadow-lg p-8 text-white mb-6">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">Available Tests</h1>
+                        <p class="text-blue-100 mt-1">Select a test to begin your assessment</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 text-sm mt-4">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+                        📝 <?php echo e(count($tests)); ?> Test<?php echo e(count($tests) !== 1 ? 's' : ''); ?> Available
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $tests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $test): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-200 group">
+                    <div class="p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-lg p-3 shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    <?php echo e($test->name ?? 'Untitled Test'); ?>
+
+                                </h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <div class="inline-flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-medium">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <?php echo e(is_string($test->question_ids) ? count(json_decode($test->question_ids)) : count($test->question_ids)); ?> Questions
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'secondary','wire:click' => 'resetTest']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'primary','wire:click' => 'selectTest('.e($test->id).')','class' => 'w-full','size' => 'lg','icon' => 'heroicon-o-play']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('filament::button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['color' => 'secondary','wire:click' => 'resetTest']); ?>
-                    Back
-                 <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['color' => 'primary','wire:click' => 'selectTest('.e($test->id).')','class' => 'w-full','size' => 'lg','icon' => 'heroicon-o-play']); ?>
+                                Start Test
+                             <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
 <?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
@@ -133,33 +128,247 @@
 <?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
 <?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
 <?php endif; ?>
-                <!--[if BLOCK]><![endif]--><?php if(empty($results)): ?>
-                <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'success','type' => 'submit']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('filament::button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['color' => 'success','type' => 'submit']); ?>
-                    Submit Test
-                 <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div class="col-span-2">
+                    <div class="text-center py-20">
+                        <div class="mb-6">
+                            <div class="mx-auto w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center">
+                                <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                            No Tests Available
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            There are currently no active tests to take.
+                        </p>
+                    </div>
+                </div>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
-        </form>
-    </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php else: ?>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 p-6 text-white">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-1">
+                                <?php echo e($selectedTest->name ?? 'Test'); ?>
+
+                            </h2>
+                            <!--[if BLOCK]><![endif]--><?php if(empty($results)): ?>
+                            <p class="text-blue-100">
+                                Answer all questions carefully and click Submit when done
+                            </p>
+                            <?php else: ?>
+                            <?php
+                            $total = count($questions);
+                            $correct = collect($results)->where('isCorrect', true)->count();
+                            $score = $total ? round(($correct / $total) * 100, 2) : 0;
+                            ?>
+                            <p class="text-blue-100 text-lg font-semibold">
+                                Score: <span class="text-green-300"><?php echo e($score); ?>%</span> (<?php echo e($correct); ?>/<?php echo e($total); ?> correct)
+                            </p>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+                        <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'white','wire:click' => 'resetTest','outlined' => true,'icon' => 'heroicon-o-x-mark']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filament::button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['color' => 'white','wire:click' => 'resetTest','outlined' => true,'icon' => 'heroicon-o-x-mark']); ?>
+                            Exit Test
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <!--[if BLOCK]><![endif]--><?php if(!empty($results)): ?>
+                    
+                    <div class="grid md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border-2 border-blue-200 dark:border-blue-800">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-blue-500 text-white rounded-lg p-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold text-blue-900 dark:text-blue-100"><?php echo e($correct); ?></div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Correct</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl p-6 border-2 border-red-200 dark:border-red-800">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-red-500 text-white rounded-lg p-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold text-red-900 dark:text-red-100"><?php echo e($total - $correct); ?></div>
+                                    <div class="text-sm text-red-700 dark:text-red-300">Incorrect</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-800">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-purple-500 text-white rounded-lg p-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold text-purple-900 dark:text-purple-100"><?php echo e($score); ?>%</div>
+                                    <div class="text-sm text-purple-700 dark:text-purple-300">Score</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+                    <form wire:submit.prevent="submit" class="space-y-6">
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $questions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $question): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                        $letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+                        ?>
+                        <div class="border-2 rounded-xl overflow-hidden border-gray-200 dark:border-gray-700">
+                            <div class="p-6 bg-white dark:bg-gray-800">
+                                <div class="flex items-start gap-3 mb-4">
+                                    <div class="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg shrink-0">
+                                        <?php echo e($index + 1); ?>
+
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex-1 pt-1">
+                                        <?php echo e($question->question); ?>
+
+                                    </h3>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $question->answers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $optionIndex => $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <label class="flex items-start p-4 border-2 rounded-xl cursor-pointer transition-all duration-200
+                                              border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600
+                                              peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 shadow-sm">
+                                        <input type="radio"
+                                            wire:model="answers.<?php echo e($question->id); ?>"
+                                            value="<?php echo e($option->id); ?>"
+                                            class="sr-only peer"
+                                            <?php echo e(isset($results[$question->id]) ? 'disabled' : ''); ?>>
+
+                                        <div class="flex items-center gap-4 w-full">
+                                            <div class="shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-sm
+                                                    border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400
+                                                    peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white">
+                                                <?php echo e($letters[$optionIndex] ?? $optionIndex + 1); ?>
+
+                                            </div>
+                                            <span class="flex-1 text-base
+                                                     peer-checked:text-gray-900 dark:peer-checked:text-gray-100">
+                                                <?php echo e($option->answer); ?>
+
+                                            </span>
+                                        </div>
+                                    </label>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+
+                        <div class="flex justify-between items-center pt-6 border-t-2 border-gray-200 dark:border-gray-700">
+                            <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'gray','wire:click' => 'resetTest','outlined' => true,'icon' => 'heroicon-o-arrow-left','size' => 'lg']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filament::button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['color' => 'gray','wire:click' => 'resetTest','outlined' => true,'icon' => 'heroicon-o-arrow-left','size' => 'lg']); ?>
+                                Back to Tests
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+
+                            <!--[if BLOCK]><![endif]--><?php if(empty($results)): ?>
+                            <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'success','type' => 'submit','icon' => 'heroicon-o-check-circle','size' => 'lg']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filament::button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['color' => 'success','type' => 'submit','icon' => 'heroicon-o-check-circle','size' => 'lg']); ?>
+                                Submit Test
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+                            <?php else: ?>
+                            <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['color' => 'primary','wire:click' => 'selectTest('.e($selectedTest->id).')','icon' => 'heroicon-o-arrow-path','size' => 'lg']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filament::button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['color' => 'primary','wire:click' => 'selectTest('.e($selectedTest->id).')','icon' => 'heroicon-o-arrow-path','size' => 'lg']); ?>
+                                Retake Test
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
+<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
+<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
+<?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal166a02a7c5ef5a9331faf66fa665c256)): ?>
