@@ -14,7 +14,7 @@ class ProfileSummary extends Widget
 
     public function mount(): void
     {
-        $user = Auth::guard('member')->user();
+        $user = auth()->user();
         $this->sections = $user->sections;
         $this->certifications = $user->certifications;
     }

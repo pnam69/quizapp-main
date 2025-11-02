@@ -18,8 +18,7 @@ class QuizHeaderPolicy
      */
     public function viewAny(User $user): bool
     {
-       // return $user->can('view_any_quiz::header');
-        return true;
+        return $user->can('view_any_quiz::header');
     }
 
     /**
@@ -112,7 +111,7 @@ class QuizHeaderPolicy
      */
     public function restore(User $user, QuizHeader $quizHeader): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_quiz::header');
     }
 
     /**
@@ -123,7 +122,7 @@ class QuizHeaderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_quiz::header');
     }
 
     /**
@@ -135,7 +134,7 @@ class QuizHeaderPolicy
      */
     public function replicate(User $user, QuizHeader $quizHeader): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_quiz::header');
     }
 
     /**
@@ -146,7 +145,7 @@ class QuizHeaderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_quiz::header');
     }
 
 }

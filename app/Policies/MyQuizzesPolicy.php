@@ -111,7 +111,7 @@ class MyQuizzesPolicy
      */
     public function restore(User $user, MyQuizzes $myQuizzes): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_my::quizzes');
     }
 
     /**
@@ -122,7 +122,7 @@ class MyQuizzesPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_my::quizzes');
     }
 
     /**
@@ -134,7 +134,7 @@ class MyQuizzesPolicy
      */
     public function replicate(User $user, MyQuizzes $myQuizzes): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_my::quizzes');
     }
 
     /**
@@ -145,7 +145,7 @@ class MyQuizzesPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_my::quizzes');
     }
 
 }

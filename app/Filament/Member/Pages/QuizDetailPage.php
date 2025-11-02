@@ -7,7 +7,7 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-$user = Auth::guard('member')->user();
+$user = auth()->user();
 
 class QuizDetailPage extends Page
 {

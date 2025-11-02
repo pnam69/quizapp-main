@@ -111,7 +111,7 @@ class AnswerPolicy
      */
     public function restore(User $user, Answer $answer): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_answer');
     }
 
     /**
@@ -122,7 +122,7 @@ class AnswerPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_answer');
     }
 
     /**
@@ -134,7 +134,7 @@ class AnswerPolicy
      */
     public function replicate(User $user, Answer $answer): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_answer');
     }
 
     /**
@@ -145,7 +145,7 @@ class AnswerPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_answer');
     }
 
 }

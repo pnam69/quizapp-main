@@ -17,7 +17,7 @@ class Notifications extends Page
     public function mount(): void
     {
         /** @var \App\Models\User $user */
-        $user = Auth::guard('member')->user();
+        $user = auth()->user();
         $this->notifications = $user->notifications()->latest()->get();
     }
 }

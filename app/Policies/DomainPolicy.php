@@ -111,7 +111,7 @@ class DomainPolicy
      */
     public function restore(User $user, Domain $domain): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_domain');
     }
 
     /**
@@ -122,7 +122,7 @@ class DomainPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_domain');
     }
 
     /**
@@ -134,7 +134,7 @@ class DomainPolicy
      */
     public function replicate(User $user, Domain $domain): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_domain');
     }
 
     /**
@@ -145,7 +145,7 @@ class DomainPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_domain');
     }
 
 }

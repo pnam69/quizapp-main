@@ -111,7 +111,7 @@ class QuotePolicy
      */
     public function restore(User $user, Quote $quote): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_quote');
     }
 
     /**
@@ -122,7 +122,7 @@ class QuotePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_quote');
     }
 
     /**
@@ -134,7 +134,7 @@ class QuotePolicy
      */
     public function replicate(User $user, Quote $quote): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_quote');
     }
 
     /**
@@ -145,7 +145,7 @@ class QuotePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_quote');
     }
 
 }

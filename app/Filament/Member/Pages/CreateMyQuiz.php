@@ -111,7 +111,7 @@ class CreateMyQuiz extends Page implements HasForms
 
     public function submit(): void
     {
-        $user = Auth::guard('member')->user();
+        $user = auth()->user();
         if (!$user) {
             Notification::make()
                 ->title('Authentication Error')

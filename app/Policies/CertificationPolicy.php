@@ -111,7 +111,7 @@ class CertificationPolicy
      */
     public function restore(User $user, Certification $certification): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_certification');
     }
 
     /**
@@ -122,7 +122,7 @@ class CertificationPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_certification');
     }
 
     /**
@@ -134,7 +134,7 @@ class CertificationPolicy
      */
     public function replicate(User $user, Certification $certification): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_certification');
     }
 
     /**
@@ -145,7 +145,7 @@ class CertificationPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_certification');
     }
 
 }

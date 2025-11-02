@@ -17,7 +17,7 @@ class MyResults extends Page
     public function mount(): void
     {
         /** @var \App\Models\User $user */
-        $user = Auth::guard('member')->user();
+        $user = auth()->user();
 
         $this->completedQuizzes = $user->quizzes()
             ->with(['section', 'certification'])
