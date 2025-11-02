@@ -1,0 +1,2 @@
+<img src="<?php echo e(asset('/images/logo.png')); ?>" alt="Logo" class="h-10">
+<?php /**PATH D:\Android\quizapp1\quizapp-main\quizapp-main\resources\views/vendor/filament-panels/components/logo.blade.php ENDPATH**/ ?>
