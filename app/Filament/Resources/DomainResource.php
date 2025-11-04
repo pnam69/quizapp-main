@@ -83,6 +83,7 @@ class DomainResource extends Resource
                     ->wrap(),
 
                 Tables\Columns\TextColumn::make('certification.name')
+                    ->label('Department')
                     ->sortable()
                     ->searchable(),
 
@@ -95,6 +96,7 @@ class DomainResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_active'),
 
                 Tables\Columns\TextColumn::make('certification.section.name')
+                    ->label('Faculty')
                     ->searchable()
                     ->sortable(),
 

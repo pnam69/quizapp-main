@@ -58,7 +58,7 @@ class TestResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Test Name')->searchable(),
-                Tables\Columns\TextColumn::make('certification.name')->label('Certification'),
+                Tables\Columns\TextColumn::make('certification.name')->label('Department'),
                 Tables\Columns\TextColumn::make('question_count')
                     ->label('Questions')
                     ->getStateUsing(fn($record) => count($record->question_ids ?? [])),

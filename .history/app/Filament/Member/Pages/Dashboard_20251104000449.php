@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Filament\Member\Pages;
+
+use Filament\Pages\Page;
+use App\Models\AssessmentAttempt;
+use App\Models\Assessment;
+use App\Models\Homework;
+use App\Models\HomeworkSubmission;
+use App\Models\Hub;
+use Illuminate\Support\Facades\Auth;
+
+class Dashboard extends Page
+{
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string $view = 'filament.member.pages.dashboard';
+    protected static ?int $navigationSort = 1;
+
+    public $totalAssessments = 0;
+    public $completedAssessments = 0;
+    public $recentResults;
+    public $nextAssessment;
+    public $pendingHomework = 0;
+    public $gradedHomework;
+    public $averageScore = 0;
+    public $recentMaterials;
+
+    public function mount(): void
+    {
+        $user = Auth::user();
+        $sectionIds = $user->sections->pluck('id');
+        $certificationIds = $user->certifications->pluck('id');
+
+        // Get all assessments available to the user
+        $assessments = Assessment::whereHas('classrooms', function ($query) use ($sectionIds) {
+            $query->whereIn('sections.id', $sectionIds);
+        })->get();
+
+        // Get user's assessment attempts
+        $attempts = AssessmentAttempt::where('user_id', $user->id)
+            ->whereIn('assessment_id', $assessments->pluck('id'))
+            ->get();
+
+        // Statistics
+        $this->totalAssessments = $assessments->count();
+        $this->completedAssessments = $attempts->where('completed', true)->count();
+
+        // Recent Results - Last 3 completed attempts
+        $this->recentResults = AssessmentAttempt::where('user_id', $user->id)
+            ->where('completed', true)
+            ->with('assessment')
+            ->orderBy('completed_at', 'desc')
+            ->take(3)
+            ->get();
+
+        // Next Assessment - First incomplete or not attempted
+        $completedAssessmentIds = $attempts->where('completed', true)->pluck('assessment_id');
+        $this->nextAssessment = $assessments
+            ->whereNotIn('id', $completedAssessmentIds)
+            ->sortBy('created_at')
+            ->first();
+
+        // Homework statistics
+        $this->pendingHomework = Homework::whereHas('classrooms', function ($query) use ($sectionIds) {
+            $query->whereIn('sections.id', $sectionIds);
+        })
+            ->where('due_date', '>=', now())
+            ->whereDoesntHave('submissions', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->count();
+
+        // Recent graded homework
+        $this->gradedHomework = HomeworkSubmission::where('user_id', $user->id)
+            ->whereNotNull('graded_at')
+            ->with('homework')
+            ->orderBy('graded_at', 'desc')
+            ->take(3)
+            ->get();
+
+        // Calculate average score from assessment attempts
+        $completedAttempts = $attempts->where('completed', true);
+        if ($completedAttempts->count() > 0) {
+            $this->averageScore = $completedAttempts->map(function ($attempt) {
+                return ($attempt->score / $attempt->total_points) * 100;
+            })->average();
+        } else {
+            $this->averageScore = 0;
+        }
+
+        // Recent study materials
+        $this->recentMaterials = Hub::whereHas('classrooms', function ($query) use ($sectionIds) {
+            $query->whereIn('sections.id', $sectionIds);
+        })
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+    }
+}

@@ -257,7 +257,7 @@ class UserQuiz extends Component implements HasForms
                 ComponentsSection::make('Quiz Configuration')
                     ->schema([
                         Wizard::make([
-                            Wizard\Step::make('Certification')
+                            Wizard\Step::make('Department')
                                 ->schema([
                                     Select::make('test_id')
                                         ->label('Select Test')
@@ -267,7 +267,7 @@ class UserQuiz extends Component implements HasForms
                                         ->native(false),
 
                                     Select::make('certification_id')
-                                        ->label('Certification')
+                                        ->label('Department')
                                         ->options(
                                             Auth::user()->certifications_owned->pluck('name', 'id')
                                         )

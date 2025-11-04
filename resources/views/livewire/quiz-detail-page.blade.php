@@ -100,7 +100,7 @@
             @endif
             @if($userResult->question->getMedia('questions')->first())
             <x-displayImage>
-                <img alt="Section Image" src="{{ $userResult->question->getMedia('questions')->first()->getUrl() }}"
+                <img alt="Question Image" src="{{ $userResult->question->getMedia('questions')->first()->getUrl() }}"
                     class="h-full w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]" />
             </x-displayImage>
             @endif

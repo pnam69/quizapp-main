@@ -148,7 +148,7 @@ class HomeworkResource extends Resource
                     ->description(fn($record) => Str::limit($record->description, 50)),
 
                 Tables\Columns\TextColumn::make('certification.name')
-                    ->label('Subject')
+                    ->label('Department')
                     ->searchable()
                     ->sortable()
                     ->badge()
@@ -191,7 +191,7 @@ class HomeworkResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('certification')
-                    ->label('Subject')
+                    ->label('Department')
                     ->relationship('certification', 'name'),
                 Tables\Filters\SelectFilter::make('classroom')
                     ->label('Class')

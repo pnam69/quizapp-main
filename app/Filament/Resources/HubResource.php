@@ -138,15 +138,15 @@ class HubResource extends Resource
                     ]),
 
                 Tables\Columns\TextColumn::make('certification.name')
-                    ->label('Subject/Course')
+                    ->label('Department')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('section.name')
-                    ->label('Topic')
+                    ->label('Faculty')
                     ->searchable()
                     ->toggleable()
-                    ->placeholder('All topics'),
+                    ->placeholder('All faculties'),
 
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('Students')
@@ -174,10 +174,10 @@ class HubResource extends Resource
                         'other' => 'Other',
                     ]),
                 Tables\Filters\SelectFilter::make('certification')
-                    ->label('Subject/Course')
+                    ->label('Department')
                     ->relationship('certification', 'name'),
                 Tables\Filters\SelectFilter::make('section')
-                    ->label('Topic')
+                    ->label('Faculty')
                     ->relationship('section', 'name'),
             ])
             ->actions([
