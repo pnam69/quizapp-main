@@ -37,8 +37,7 @@
                 </div>
                 <!--[if BLOCK]><![endif]--><?php if($assessmentAttempts->count() > 0): ?>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
-                    📊 Average Score: <?php echo e(round($assessmentAttempts->avg('score'), 1)); ?>/<?php echo e($assessmentAttempts->first()->total_points ?? 100); ?>
-
+                    📊 Average Score: <?php echo e(round($assessmentAttempts->avg('percentage'), 1)); ?>%
                 </div>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
@@ -68,7 +67,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-green-900 dark:text-green-100"><?php echo e(round($assessmentAttempts->avg('score'), 1)); ?></div>
+                        <div class="text-2xl font-bold text-green-900 dark:text-green-100"><?php echo e(round($assessmentAttempts->avg('percentage'), 1)); ?>%</div>
                         <div class="text-sm text-green-700 dark:text-green-300">Average Score</div>
                     </div>
                 </div>
@@ -81,7 +80,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-purple-900 dark:text-purple-100"><?php echo e($assessmentAttempts->max('score')); ?></div>
+                        <div class="text-2xl font-bold text-purple-900 dark:text-purple-100"><?php echo e(round($assessmentAttempts->max('percentage'), 1)); ?>%</div>
                         <div class="text-sm text-purple-700 dark:text-purple-300">Best Score</div>
                     </div>
                 </div>
@@ -106,8 +105,9 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
             <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $assessmentAttempts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attempt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <?php
-            $percentage = $attempt->total_points > 0 ? round(($attempt->score / $attempt->total_points) * 100, 1) : 0;
-            $scoreColor = $percentage >= 80 ? 'green' : ($percentage >= 60 ? 'yellow' : 'red');
+            $percentage = $attempt->percentage ?? 0;
+            $passed = $attempt->passed ?? false;
+            $scoreColor = $passed ? 'green' : ($percentage >= 50 ? 'yellow' : 'red');
             ?>
             <div class="p-6 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200">
                 <div class="flex items-start justify-between gap-6">
@@ -128,11 +128,11 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                                         </svg>
-                                        Score: <?php echo e($attempt->score); ?>/<?php echo e($attempt->total_points); ?> (<?php echo e($percentage); ?>%)
+                                        Score: <?php echo e($attempt->points_earned); ?>/<?php echo e($attempt->total_points); ?> (<?php echo e(number_format($percentage, 1)); ?>%)
                                     </div>
                                     <!--[if BLOCK]><![endif]--><?php if($attempt->passed !== null): ?>
-                                    <div class="inline-flex items-center gap-1.5 bg-<?php echo e($attempt->passed ? 'green' : 'red'); ?>-100 dark:bg-<?php echo e($attempt->passed ? 'green' : 'red'); ?>-900/30 text-<?php echo e($attempt->passed ? 'green' : 'red'); ?>-700 dark:text-<?php echo e($attempt->passed ? 'green' : 'red'); ?>-300 px-3 py-1 rounded-full text-sm font-bold">
-                                        <?php echo e($attempt->passed ? 'Passed' : 'Failed'); ?>
+                                    <div class="inline-flex items-center gap-1.5 bg-<?php echo e($passed ? 'green' : 'red'); ?>-100 dark:bg-<?php echo e($passed ? 'green' : 'red'); ?>-900/30 text-<?php echo e($passed ? 'green' : 'red'); ?>-700 dark:text-<?php echo e($passed ? 'green' : 'red'); ?>-300 px-3 py-1 rounded-full text-sm font-bold">
+                                        <?php echo e($passed ? 'Passed' : 'Failed'); ?>
 
                                     </div>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -240,7 +240,8 @@
 <?php endif; ?>
 
                 <?php
-                $percentage = $selectedAttempt->total_points > 0 ? round(($selectedAttempt->score / $selectedAttempt->total_points) * 100, 1) : 0;
+                $percentage = $selectedAttempt->percentage ?? 0;
+                $passed = $selectedAttempt->passed ?? false;
                 ?>
 
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4"><?php echo e($selectedAttempt->assessment->title); ?></h2>
@@ -248,13 +249,13 @@
                 <div class="grid md:grid-cols-3 gap-4 mb-6">
                     <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6">
                         <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Your Score</div>
-                        <div class="text-3xl font-bold text-blue-900 dark:text-blue-100"><?php echo e($selectedAttempt->score); ?>/<?php echo e($selectedAttempt->total_points); ?></div>
-                        <div class="text-sm text-blue-700 dark:text-blue-300 mt-1"><?php echo e($percentage); ?>%</div>
+                        <div class="text-3xl font-bold text-blue-900 dark:text-blue-100"><?php echo e($selectedAttempt->points_earned); ?>/<?php echo e($selectedAttempt->total_points); ?></div>
+                        <div class="text-sm text-blue-700 dark:text-blue-300 mt-1"><?php echo e(number_format($percentage, 1)); ?>%</div>
                     </div>
                     <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6">
                         <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Status</div>
                         <div class="text-2xl font-bold text-green-900 dark:text-green-100">
-                            <?php echo e($selectedAttempt->passed ? 'Passed ✓' : 'Failed ✗'); ?>
+                            <?php echo e($passed ? 'Passed ✓' : 'Failed ✗'); ?>
 
                         </div>
                         <div class="text-sm text-green-700 dark:text-green-300 mt-1">
